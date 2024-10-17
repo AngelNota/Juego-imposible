@@ -4,10 +4,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    margin: 2;
 }
-
 .contenedor {
     text-align: center;
     background-color: white;
