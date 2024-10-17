@@ -95,7 +95,7 @@ function juego(posI, posJ) {
         document.getElementsByClassName("Movimientos")[0].innerHTML = "Movimientos: " + movimientos;
 
         // Verificar si el jugador ha ganado
-        if (verificarVictoria()) {
+        if (verificarVictoria() || verificarVictoriaCaracol() ) {
             alert("¡Felicidades " + nombre + ", ganaste en " + segundos + " segundos y " + movimientos + " movimientos!");
             clearInterval(tiempo); // Detener el contador de tiempo
         }
@@ -109,6 +109,47 @@ function verificarVictoria() {
             if (tablero[i][j] != num && num != numeros) return false;
             num++;
         }
-
     return true;
+}
+
+function verificarVictoriaCaracol() {
+    let left = 0, right = nCasillas - 1, top = 0, bottom = nCasillas - 1;
+    let numEsperado = 1;
+
+    while (left <= right && top <= bottom) {
+        // De izquierda a derecha
+        for (let j = left; j <= right; j++) {
+            if (tablero[top][j] !== numEsperado && tablero[top][j] !== -1) return false;
+            if (tablero[top][j] !== -1) numEsperado++;
+        }
+        top++;
+
+        // De arriba hacia abajo
+        for (let i = top; i <= bottom; i++) {
+            if (tablero[i][right] !== numEsperado && tablero[i][right] !== -1) return false;
+            if (tablero[i][right] !== -1) numEsperado++;
+        }
+        right--;
+
+        // De derecha a izquierda
+        if (top <= bottom) {
+            for (let j = right; j >= left; j--) {
+                if (tablero[bottom][j] !== numEsperado && tablero[bottom][j] !== -1) return false;
+                if (tablero[bottom][j] !== -1) numEsperado++;
+            }
+            bottom--;
+        }
+
+        // De abajo hacia arriba
+        if (left <= right) {
+            for (let i = bottom; i >= top; i--) {
+                if (tablero[i][left] !== numEsperado && tablero[i][left] !== -1) return false;
+                if (tablero[i][left] !== -1) numEsperado++;
+            }
+            left++;
+        }
+    }
+
+    // Si todos los números están en su lugar correcto, retorna true (victoria)
+    return true; 
 }
